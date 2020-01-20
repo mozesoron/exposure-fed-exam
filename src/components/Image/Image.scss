@@ -1,3 +1,17 @@
+@mixin flipScaleX {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+@mixin flipTransform {
+  -webkit-transition: transform 0.8s;
+  -moz-transition: transform 0.8s;
+  -o-transition: transform 0.8s;
+  transition: transform 0.8s;
+}
+
 .image-root {
   background-size: cover;
   background-position: center center;
@@ -6,6 +20,7 @@
   box-sizing: border-box;
   position: relative;
   border: 1px solid white;
+  transition: transform 0.8s;
 
   > div {
     visibility: hidden;
@@ -48,3 +63,11 @@
   }
 }
 
+.image-flip{
+  @include flipScaleX();
+  @include flipTransform();
+  transition: transform 0.8s;
+  > div{
+    @include flipScaleX();
+  }
+}
