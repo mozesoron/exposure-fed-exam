@@ -11,6 +11,7 @@ class Gallery extends React.Component {
 
   constructor(props) {
     super(props);
+    this.duplicateImage = this.duplicateImage.bind(this);
     this.state = {
       images: [],
       galleryWidth: this.getGalleryWidth()
@@ -56,11 +57,17 @@ class Gallery extends React.Component {
     this.getImages(props.tag);
   }
 
+  //duplicate the image
+  duplicateImage(dto){
+    this.setState(({images}) =>({images: [dto, ...images]}));
+  }
+
+
   render() {
     return (
       <div className="gallery-root">
-        {this.state.images.map(dto => {
-          return <Image key={'image-' + dto.id} dto={dto} galleryWidth={this.state.galleryWidth}/>;
+        {this.state.images.map((dto ,index) => {
+          return <Image key={'image-' + index} dto={dto} galleryWidth={this.state.galleryWidth} duplicateImage={this.duplicateImage} />;
         })}
       </div>
     );
