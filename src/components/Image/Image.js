@@ -10,6 +10,7 @@ class Image extends React.Component {
     dto: PropTypes.object,
     galleryWidth: PropTypes.number,
     duplicateImage: PropTypes.func,
+    showImage: PropTypes.func,
   };
 
   constructor(props) {
@@ -64,7 +65,7 @@ class Image extends React.Component {
         <div>
           <FontAwesome className="image-icon" onClick={this.flipImage} name="arrows-alt-h" title="flip"/>
           <FontAwesome className="image-icon" onClick={this.props.duplicateImage.bind(this, dto)} name="clone" title="clone"/>
-          <FontAwesome className="image-icon" name="expand" title="expand"/>
+          <FontAwesome className="image-icon" onClick={this.props.showImage.bind(this, dto)} name="expand" title="expand"/>
         </div>
       </div>
     );

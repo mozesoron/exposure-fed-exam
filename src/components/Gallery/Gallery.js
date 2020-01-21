@@ -12,9 +12,12 @@ class Gallery extends React.Component {
   constructor(props) {
     super(props);
     this.duplicateImage = this.duplicateImage.bind(this);
+    this.showImage = this.showImage.bind(this);
     this.state = {
       images: [],
-      galleryWidth: this.getGalleryWidth()
+      galleryWidth: this.getGalleryWidth(),
+      isOpen: false,
+      dto: null,
     };
   }
 
@@ -62,13 +65,40 @@ class Gallery extends React.Component {
     this.setState(({images}) =>({images: [dto, ...images]}));
   }
 
+//display this image in a larger view.
+showImage(dto){
+ this.setState(({isOpen}) => ({isOpen: !isOpen, dto}));
+}
+
+//get the image
+urlFromDto(dto) {
+ return `https://farm${dto.farm}.staticflickr.com/${dto.server}/${dto.id}_${dto.secret}.jpg`;
+}
+
 
   render() {
+    const {isOpen, dto} = this.state;
     return (
+      <div>
       <div className="gallery-root">
         {this.state.images.map((dto ,index) => {
-          return <Image key={'image-' + index} dto={dto} galleryWidth={this.state.galleryWidth} duplicateImage={this.duplicateImage} />;
+          return <Image key={'image-' + index} dto={dto} galleryWidth={this.state.galleryWidth} duplicateImage={this.duplicateImage} showImage={this.showImage} />;
         })}
+      </div>
+      {isOpen && (
+        <dialog
+          className="dialog"
+          style={{ position: "absolute" }}
+          open
+        >
+          <img
+            className="image"
+            src={`${this.urlFromDto(dto)}`}
+            onClick={this.showImage}
+            alt="no image"
+          />
+        </dialog>
+      )}
       </div>
     );
   }
