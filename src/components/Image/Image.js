@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 
 import './Image.scss';
 
@@ -92,6 +94,10 @@ class Image extends React.Component {
           <FontAwesome className="image-icon" onClick={this.props.duplicateImage.bind(this, dto)} name="clone" title="clone"/>
           <FontAwesome className="image-icon" onClick={this.props.showImage.bind(this, dto)} name="expand" title="expand"/>
           <FontAwesome className="image-icon" onClick={this.addToFavorite} name={this.state.favoriteName} title="Add to favorite" />
+          {/* share image to Facebook */}
+          <a href={`https://facebook.com/sharer/sharer.php?u=${this.urlFromDto(this.props.dto)}`}>
+             <FontAwesomeIcon className="image-icon"  icon={faFacebook} title="facebook"/>
+          </a>
         </div>
       </div>
     );
