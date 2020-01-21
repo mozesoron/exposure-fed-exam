@@ -78,10 +78,14 @@ urlFromDto(dto) {
 
   render() {
     const {isOpen, dto} = this.state;
+    const {favorites} = this.props;
+    const favoritesStorage = localStorage.getItem('favorites') || "";
+    const arrfavoritesStorage = favoritesStorage.split(',');
+    const images = favorites ? this.state.images.filter(({id}) => arrfavoritesStorage.includes(id)) : this.state.images;
     return (
       <div>
       <div className="gallery-root">
-        {this.state.images.map((dto ,index) => {
+        {images.map((dto ,index) => {
           return <Image key={'image-' + index} dto={dto} galleryWidth={this.state.galleryWidth} duplicateImage={this.duplicateImage} showImage={this.showImage} />;
         })}
       </div>

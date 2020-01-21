@@ -18,8 +18,12 @@ class Image extends React.Component {
     this.calcImageSize = this.calcImageSize.bind(this);
     //bind the flipImage method.
     this.flipImage = this.flipImage.bind(this);
+    this.addToFavorite = this.addToFavorite.bind(this);
     this.state = {
-      size: 200
+      size: 200,
+      flipped: false,
+      isFavorite: false,
+      favoriteName:'thumbs-down'
     };
   }
 
@@ -45,7 +49,28 @@ class Image extends React.Component {
   flipImage (){
     this.setState(({flipped}) => ({flipped: !flipped}));
   }
-  
+
+  //add and remove favorite images for user
+  addToFavorite(){
+    const {dto: {id}} = this.props;
+    let favorites = localStorage.getItem('favorites') || "";
+    const arrfavoritesStorage = favorites.split(','); 
+    const includeFavorite = arrfavoritesStorage.includes(id);
+    if (includeFavorite){
+      //remove image from favorite
+      let filtered = arrfavoritesStorage.filter(function(value, index, arr){
+        return value != id;
+      });
+      localStorage.setItem('favorites', filtered.toString()); 
+      this.setState(({favoriteName}) => ({favoriteName: 'thumbs-up'}));
+    }else{
+      //add imge to favorire
+      favorites = `${favorites},${id}`
+      localStorage.setItem('favorites', favorites);
+      this.setState(({favoriteName}) => ({favoriteName: 'thumbs-down'}));
+    }  
+  }
+
   render() {
     const {flipped} = this.state;
     //add css to image for flip when flipped is true.
@@ -66,6 +91,7 @@ class Image extends React.Component {
           <FontAwesome className="image-icon" onClick={this.flipImage} name="arrows-alt-h" title="flip"/>
           <FontAwesome className="image-icon" onClick={this.props.duplicateImage.bind(this, dto)} name="clone" title="clone"/>
           <FontAwesome className="image-icon" onClick={this.props.showImage.bind(this, dto)} name="expand" title="expand"/>
+          <FontAwesome className="image-icon" onClick={this.addToFavorite} name={this.state.favoriteName} title="Add to favorite" />
         </div>
       </div>
     );
